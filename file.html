@@ -145,6 +145,20 @@ body {
 
 <script>
 function toggleEnvelope(el) {
+  // 1️⃣ Local counter awak sendiri (hanya awak tengok)
+  let localCount = localStorage.getItem('secretEnvelopeClicks') || 0;
+  localCount = parseInt(localCount) + 1;
+  localStorage.setItem('secretEnvelopeClicks', localCount);
+  console.log("🔒 Rahsia: Envelope dibuka sebanyak " + localCount + " kali (hanya awak tahu)");
+
+  // 2️⃣ CountAPI - kira setiap orang buka (global)
+  fetch('https://api.countapi.xyz/hit/safiya-envelope/opens')
+    .then(res => res.json())
+    .then(data => {
+      console.log("💌 Dibuka oleh sesiapa sebanyak: " + data.value + " kali");
+    });
+
+  // 3️⃣ Envelope animation
   if(!el.classList.contains('open')) {
     el.classList.add('open'); // klik pertama: surat muncul
   } else {
