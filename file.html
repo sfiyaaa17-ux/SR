@@ -144,41 +144,48 @@ body {
 </div>
 
 <script>
-// ===== PRACTICAL COUNTER (iPhone friendly) =====
-let tapTimes = 0;
-let tapTimer;
-let secretCount = 0;
+let tapCount = 0;
+let tapTimeout = null;
+let secretCount = "…";
 
 function toggleEnvelope(el) {
-  // 1️⃣ Counter awak sendiri (local)
-  let localCount = localStorage.getItem('secretEnvelopeClicks') || 0;
-  localCount = parseInt(localCount) + 1;
-  localStorage.setItem('secretEnvelopeClicks', localCount);
 
-  // 2️⃣ Envelope animation
-  if(!el.classList.contains('open')) {
+  // 🎯 Envelope animation (asal)
+  if (!el.classList.contains('open')) {
     el.classList.add('open');
   } else {
     el.classList.add('showPhoto');
   }
 
-  // 3️⃣ Global counter (dia buka pun dikira)
+  // 🔒 Counter awak sendiri
+  let localCount = localStorage.getItem('secretEnvelopeClicks') || 0;
+  localCount = parseInt(localCount) + 1;
+  localStorage.setItem('secretEnvelopeClicks', localCount);
+
+  // 🌍 Global counter (dia buka pun dikira)
   fetch('https://api.countapi.xyz/hit/safiya-envelope/opens')
     .then(res => res.json())
     .then(data => {
       secretCount = data.value;
+    })
+    .catch(() => {
+      secretCount = "offline";
     });
 
-  // 4️⃣ Triple tap rahsia (hanya awak tahu)
-  tapTimes++;
-  clearTimeout(tapTimer);
-  tapTimer = setTimeout(() => tapTimes = 0, 1000);
+  // 👆 TAP DETECTION (lebih longgar)
+  tapCount++;
+  if (tapTimeout) clearTimeout(tapTimeout);
 
-  if(tapTimes === 3) {
-    tapTimes = 0;
+  tapTimeout = setTimeout(() => {
+    tapCount = 0;
+  }, 1500); // ⬅️ bagi 1.5 saat (iPhone friendly)
+
+  // 💥 Trigger rahsia
+  if (tapCount === 3) {
+    tapCount = 0;
     alert(
       "💌 Total dibuka: " + secretCount + " kali\n" +
-      "🔒 Awak sendiri buka: " + localCount + " kali"
+      "🔒 Awak buka: " + localCount + " kali"
     );
   }
 }
