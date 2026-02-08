@@ -144,25 +144,42 @@ body {
 </div>
 
 <script>
+// ===== PRACTICAL COUNTER (iPhone friendly) =====
+let tapTimes = 0;
+let tapTimer;
+let secretCount = 0;
+
 function toggleEnvelope(el) {
-  // 1️⃣ Local counter awak sendiri (hanya awak tengok)
+  // 1️⃣ Counter awak sendiri (local)
   let localCount = localStorage.getItem('secretEnvelopeClicks') || 0;
   localCount = parseInt(localCount) + 1;
   localStorage.setItem('secretEnvelopeClicks', localCount);
-  console.log("🔒 Rahsia: Envelope dibuka sebanyak " + localCount + " kali (hanya awak tahu)");
 
-  // 2️⃣ CountAPI - kira setiap orang buka (global)
+  // 2️⃣ Envelope animation
+  if(!el.classList.contains('open')) {
+    el.classList.add('open');
+  } else {
+    el.classList.add('showPhoto');
+  }
+
+  // 3️⃣ Global counter (dia buka pun dikira)
   fetch('https://api.countapi.xyz/hit/safiya-envelope/opens')
     .then(res => res.json())
     .then(data => {
-      console.log("💌 Dibuka oleh sesiapa sebanyak: " + data.value + " kali");
+      secretCount = data.value;
     });
 
-  // 3️⃣ Envelope animation
-  if(!el.classList.contains('open')) {
-    el.classList.add('open'); // klik pertama: surat muncul
-  } else {
-    el.classList.add('showPhoto'); // klik kedua: surat hilang, polaroid muncul
+  // 4️⃣ Triple tap rahsia (hanya awak tahu)
+  tapTimes++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(() => tapTimes = 0, 1000);
+
+  if(tapTimes === 3) {
+    tapTimes = 0;
+    alert(
+      "💌 Total dibuka: " + secretCount + " kali\n" +
+      "🔒 Awak sendiri buka: " + localCount + " kali"
+    );
   }
 }
 </script>
