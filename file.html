@@ -126,8 +126,7 @@ body {
       Please i need u.<br>
       its very hurt ..Terlalu sakit..mungkin aku terlalu ikhlas
       but please,
-      i know i'm the worst person in ur life
-      but whatever it is i will always waiting u..
+      whatever it is i will always waiting u..
       if there's nothing in this week from u 
       ya..i understand thankss.
       Apapun jadi syg dunia akhirat :)
@@ -144,25 +143,23 @@ body {
 </div>
 
 <script>
-let tapCount = 0;
-let tapTimeout = null;
-let secretCount = "…";
+let pressTimer;
+let secretCount = "...";
 
 function toggleEnvelope(el) {
-
-  // 🎯 Envelope animation (asal)
+  // Envelope animation
   if (!el.classList.contains('open')) {
     el.classList.add('open');
   } else {
     el.classList.add('showPhoto');
   }
 
-  // 🔒 Counter awak sendiri
+  // Local counter (awak sahaja)
   let localCount = localStorage.getItem('secretEnvelopeClicks') || 0;
   localCount = parseInt(localCount) + 1;
   localStorage.setItem('secretEnvelopeClicks', localCount);
 
-  // 🌍 Global counter (dia buka pun dikira)
+  // Global counter (dia buka pun dikira)
   fetch('https://api.countapi.xyz/hit/safiya-envelope/opens')
     .then(res => res.json())
     .then(data => {
@@ -172,23 +169,19 @@ function toggleEnvelope(el) {
       secretCount = "offline";
     });
 
-  // 👆 TAP DETECTION (lebih longgar)
-  tapCount++;
-  if (tapTimeout) clearTimeout(tapTimeout);
-
-  tapTimeout = setTimeout(() => {
-    tapCount = 0;
-  }, 1500); // ⬅️ bagi 1.5 saat (iPhone friendly)
-
-  // 💥 Trigger rahsia
-  if (tapCount === 3) {
-    tapCount = 0;
+  // Start long press detect
+  pressTimer = setTimeout(() => {
     alert(
       "💌 Total dibuka: " + secretCount + " kali\n" +
       "🔒 Awak buka: " + localCount + " kali"
     );
-  }
+  }, 2000); // ⏱️ tahan 2 saat
 }
+
+// Bila lepas jari → cancel
+document.querySelector('.envelope-container').addEventListener('touchend', () => {
+  clearTimeout(pressTimer);
+});
 </script>
 
 </body>
