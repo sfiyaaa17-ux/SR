@@ -1,151 +1,201 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<title>Special Muah 💌</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Baby Blue Birthday Card</title>
+
 <style>
-body {
-  background: #fff0f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-family: 'Comic Sans MS', cursive, sans-serif;
+
+body{
+
+    margin:0;
+
+    padding:0;
+
+    height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#dff6ff;
+
+    font-family:Arial, sans-serif;
+
 }
 
-.envelope-container {
-  position: relative;
-  width: 320px;
-  height: 220px;
-  cursor: pointer;
+.card{
+
+    width:320px;
+
+    height:420px;
+
+    position:relative;
+
+    transform-style:preserve-3d;
+
+    transition:1s;
+
+    cursor:pointer;
+
 }
 
-/* Sampul */
-.envelope {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: #ffe4e1;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  z-index: 1;
+.card.open{
+
+    transform:rotateY(-180deg);
+
 }
 
-/* Flap */
-.flap {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: #ffb6c1;
-  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 0, 0 0);
-  z-index: 2;
+.front,
+
+.inside{
+
+    position:absolute;
+
+    width:100%;
+
+    height:100%;
+
+    border-radius:20px;
+
+    backface-visibility:hidden;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+
 }
 
-/* Tulisan pull me */
-.pull {
-  position: absolute;
-  bottom: 15px;
-  width: 100%;
-  text-align: center;
-  font-size: 14px;
-  color: #8b3a62;
-  z-index: 3;
+.front{
+
+    background:#9edcff;
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
 }
 
-/* Surat */
-.letter {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff8dc;
-  border-radius: 10px;
-  padding: 15px;
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 14px;
-  opacity: 0;
-  z-index: 4;
-  transition: opacity 0.6s;
+.front h1{
+
+    font-size:32px;
+
+    margin:0;
+
 }
 
-/* Polaroid */
-.polaroid {
-  position: absolute;
-  width: 190px; /* ~4.3 inch */
-  height: 190px;
-  background: #fff;
-  padding: 10px 10px 25px 10px; /* extra bawah untuk frame polaroid */
-  box-sizing: border-box;
-  border-radius: 5px;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  z-index: 5;
-  transition: opacity 0.6s;
+.front p{
+
+    margin-top:10px;
+
+    font-size:18px;
+
 }
 
-.polaroid img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 3px;
+.inside{
+
+    background:#cfefff;
+
+    color:#3b4d61;
+
+    transform:rotateY(180deg);
+
+    padding:30px;
+
+    box-sizing:border-box;
+
+    text-align:center;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
 }
 
-/* Envelope open */
-.envelope-container.open .letter {
-  opacity: 1;
+.inside h2{
+
+    margin-bottom:20px;
+
+    font-size:28px;
+
 }
 
-/* Klik kedua: surat hilang, polaroid muncul */
-.envelope-container.showPhoto .letter,
-.envelope-container.showPhoto .pull {
-  display: none;
+.inside p{
+
+    font-size:18px;
+
+    line-height:1.6;
+
 }
 
-.envelope-container.showPhoto .polaroid {
-  opacity: 1;
+.heart{
+
+    font-size:40px;
+
+    margin-top:20px;
+
 }
+
 </style>
+
 </head>
+
 <body>
 
-<div class="envelope-container" onclick="toggleEnvelope(this)">
-  <div class="envelope"></div>
-  <div class="flap"></div>
+<div class="card" id="card">
 
-  <!-- Surat -->
-  <div class="letter">
-    <h3>I'm Sorry 🤍</h3>
-    <p>
-      I know I hurt you, and I truly regret it.<br>
-      I never meant to cause you pain.<br>
-      I hope one day you can forgive me.
-    </p>
-  </div>
+    <div class="front">
 
-  <!-- Polaroid -->
-  <div class="polaroid">
-    <img src="https://i.postimg.cc/xCBL6RqK/04F2A699-519A-4A5E-8D35-306A54556F2D.jpg" alt="Polaroid Photo">
-  </div>
+        <h1>Happy Birthday 🎂</h1>
 
-  <div class="pull">Pull me 💌</div>
+        <p>Click to Open 💙</p>
+
+    </div>
+
+    <div class="inside">
+
+        <h2>To Someone Special 💙</h2>
+
+        <p>
+
+            Wishing you happiness, love, and beautiful memories today.
+
+            May your smile always shine bright and your dreams come true.
+
+        </p>
+
+        <div class="heart">🩵</div>
+
+    </div>
+
 </div>
 
 <script>
-function toggleEnvelope(el) {
-  if(!el.classList.contains('open')) {
-    el.classList.add('open'); // klik pertama: surat muncul
-  } else {
-    el.classList.add('showPhoto'); // klik kedua: surat hilang, polaroid muncul
-  }
-}
+
+const card = document.getElementById("card");
+
+card.addEventListener("click", function(){
+
+    card.classList.toggle("open");
+
+});
+
 </script>
 
 </body>
+
 </html>
