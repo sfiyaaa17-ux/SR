@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Snow Globe Memory Gift</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #111, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins;
+}
+
+/* ================= GLOBE ================= */
+.globe-wrap {
+  position: absolute;
+  text-align: center;
+  cursor: pointer;
+  transition: 1s ease;
+}
+
+.globe {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff22, #ff4da622, #000);
+  border: 3px solid rgba(255,255,255,0.3);
+  box-shadow: 0 0 40px pink;
+  position: relative;
+  overflow: hidden;
+}
+
+.snow, .heart-snow {
+  position: absolute;
+  animation: fall linear infinite;
+}
+
+.snow {
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+}
+
+.heart-snow {
+  width: 6px;
+  height: 6px;
+  background: pink;
+  transform: rotate(45deg);
+}
+
+.heart-snow::before,
+.heart-snow::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: pink;
+  border-radius: 50%;
+}
+
+.heart-snow::before { top: -3px; left: 0; }
+.heart-snow::after { left: -3px; top: 0; }
+
+@keyframes fall {
+  0% { transform: translateY(-220px); opacity: 0; }
+  50% { opacity: 0.9; }
+  100% { transform: translateY(220px); opacity: 0; }
+}
+
+.globe-base {
+  width: 120px;
+  height: 40px;
+  background: linear-gradient(#222, #000);
+  margin: -10px auto 0;
+  border-radius: 10px;
+  box-shadow: 0 0 20px pink;
+}
+
+.tap {
+  color: pink;
+  margin-top: 10px;
+  font-size: 14px;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+
+/* ================= FLIP CARD ================= */
+.scene {
+  width: 360px;
+  height: 460px;
+  perspective: 1200px;
+  display: none;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.2s;
+  cursor: pointer;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 25px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.front {
+  background: linear-gradient(145deg, #2a0f1f, #000);
+  box-shadow: 0 0 40px rgba(255,77,166,0.6);
+  color: white;
+}
+
+.front h1 {
+  font-family: 'Dancing Script', cursive;
+  color: #ff4da6;
+  font-size: 34px;
+}
+
+.back {
+  background: linear-gradient(145deg, #0f0a12, #000);
+  transform: rotateY(180deg);
+  color: white;
+  position: relative;
+}
+
+.box {
+  font-size: 90px;
+  animation: bounce 1.5s infinite;
+  filter: drop-shadow(0 0 15px pink);
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.hint {
+  color: pink;
+  margin-top: 10px;
+  animation: blink 1.2s infinite;
+}
+
+/* ================= POLAROID POPUP ================= */
+.polaroid {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  background: white;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(255,105,180,0.7);
+  z-index: 9999;
+  animation: pop 0.8s ease;
+}
+
+.polaroid img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.caption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #ff4da6;
+  font-weight: 600;
+}
+
+/* BACKDROP */
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  z-index: 9998;
+}
+
+/* ANIMATIONS */
+@keyframes pop {
+  from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- GLOBE -->
+<div class="globe-wrap" id="globeWrap" onclick="openCard()">
+  <div class="globe" id="globe"></div>
+  <div class="globe-base"></div>
+  <div class="tap">Tap snow globe ❄️💖</div>
+</div>
+
+<!-- FLIP CARD -->
+<div class="scene" id="scene">
+  <div class="card" id="card" onclick="flipCard()">
+
+    <div class="front">
+      <h1>Happy Special Day 💖</h1>
+      <p style="font-size:13px; padding:0 20px;">
+        Selamat ulang tahun..semoga berjaya dunia akhirat, sihat selalu & menjadi org yg baik..jgn marah lama-lama na ✨
+      </p>
+    </div>
+
+    <div class="back" onclick="openPolaroid()">
+      <div class="box">🎁</div>
+      <div class="hint">Click me 💝</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- BACKDROP -->
+<div class="backdrop" id="backdrop" onclick="closePolaroid()"></div>
+
+<!-- POLAROID -->
+<div class="polaroid" id="polaroid">
+  <img src="https://i.postimg.cc/8kfF7BFq/E07A0686-5C86-4090-8CD5-852A39156AAE.png">
+  <div class="caption">💖 surprisee 💖</div>
+</div>
+
+<script>
+
+// globe effects
+const globe = document.getElementById("globe");
+
+for (let i = 0; i < 25; i++) {
+  let s = document.createElement("div");
+  s.className = "snow";
+  s.style.left = Math.random() * 220 + "px";
+  s.style.animationDuration = (2 + Math.random() * 3) + "s";
+  globe.appendChild(s);
+}
+
+for (let i = 0; i < 18; i++) {
+  let h = document.createElement("div");
+  h.className = "heart-snow";
+  h.style.left = Math.random() * 220 + "px";
+  h.style.animationDuration = (3 + Math.random() * 4) + "s";
+  globe.appendChild(h);
+}
+
+// open card
+function openCard() {
+  document.getElementById("globeWrap").style.transform = "scale(0)";
+  setTimeout(() => {
+    document.getElementById("scene").style.display = "flex";
+  }, 600);
+}
+
+// flip card
+function flipCard() {
+  document.getElementById("card").classList.toggle("flipped");
+}
+
+// open polaroid
+function openPolaroid() {
+  document.getElementById("polaroid").style.display = "block";
+  document.getElementById("backdrop").style.display = "block";
+}
+
+// close polaroid
+function closePolaroid() {
+  document.getElementById("polaroid").style.display = "none";
+  document.getElementById("backdrop").style.display = "none";
+}
+
+</script>
+
+</body>
+</html>
